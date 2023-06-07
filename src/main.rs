@@ -62,12 +62,12 @@ fn eval(x: &str) -> String {
                 }
                 tmp
             };
-            let mut left: ((usize, usize), f32) = ((0, operator.0), 0.0);
-            let mut right: (usize, f32) = (operator.0, 0.0);
+            let mut left: ((usize, usize), f64) = ((0, operator.0), 0.0);
+            let mut right: (usize, f64) = (operator.0, 0.0);
             left.1 = x[left.0 .0..left.0 .1].trim().parse().unwrap();
             right.1 = x[right.0 + 1..].trim().parse().unwrap();
 
-            let result1: f32 = match operator.1 {
+            let result1: f64 = match operator.1 {
                 '+' => left.1 + right.1,
                 '-' => left.1 - right.1,
                 '*' => left.1 * right.1,
@@ -216,7 +216,7 @@ impl Lexer {
         }
         return result;
     }
-    fn parse(&mut self) -> f32 {
+    fn parse(&mut self) -> f64 {
         let mut result = 0f32;
         self.expression = self
             .expression
@@ -233,7 +233,7 @@ impl Lexer {
 
                 let function = &x[0..idx];
                 let argument = &x[idx + 1..x.len() - 1];
-                let argument: f32 = argument.parse().unwrap();
+                let argument: f64 = argument.parse().unwrap();
                 let res = match function {
                     "cos" => argument.cos().to_string(),
                     "sin" => argument.sin().to_string(),
