@@ -8,4 +8,4 @@ assert_eq!(eval("x + 2", 1), 3);
 assert_eq!(eval("(2 + 2) * 2"), 8);
 ```
 
-so here we can see how'd i see this work
+so here we can see how'd I see this work
