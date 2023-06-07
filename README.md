@@ -33,3 +33,4 @@ fn main() {
 so, here we can see example of using
 
 ## Todo: add support for trigonometrical functions and fill variables in one expressions.
+### Todo: add this to crates.io
