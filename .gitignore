@@ -1,0 +1,5 @@
+/target
+.obsidian
+*.pdb
+*.exe
+Cargo.lock
