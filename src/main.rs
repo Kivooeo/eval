@@ -44,7 +44,7 @@ fn eval(x: &str) -> String {
             counter += 1;
         }
     }
-    let mut result = String::new();
+    let result: String;
     match counter {
         1 => {
             if x.starts_with("-") {
@@ -86,8 +86,8 @@ fn eval(x: &str) -> String {
             let mut basics: Vec<(usize, char)> = basic(&x);
             let mut res = 0f64;
             while basics.len() != 0 {
-                let mut left = 0f64;
-                let mut right = 0f64;
+                let left: f64;
+                let right: f64;
                 let mut left_idx = 0usize;
                 let mut right_idx = 0usize;
 
@@ -121,7 +121,7 @@ fn eval(x: &str) -> String {
                     right_idx = i.0 + 1;
                     println!("right idx {}", right_idx);
                     println!("x len is {}", x.len());
-                    let mut first_char = x.chars().nth(right_idx).unwrap();
+                    let first_char = x.chars().nth(right_idx).unwrap();
                     println!("first char is {first_char}");
                     if first_char == '-' {
                         right_idx += 1;
@@ -217,17 +217,16 @@ impl Lexer {
         return result;
     }
     fn parse(&mut self) -> f64 {
-        let mut result = 0f32;
+        let _result = 0f32;
         self.expression = self
             .expression
             .chars()
             .filter(|x| !x.is_ascii_whitespace())
             .collect();
         let mut trigs = find_trig_functions_indices(&self.expression);
-
         while trigs.len() != 0 {
             let i = trigs[0];
-            let tmp = {
+            let _tmp = {
                 let x = &self.expression.clone()[i.0..=i.1];
                 let idx = x.chars().position(|x| x == '(').unwrap();
 
@@ -267,7 +266,7 @@ impl Lexer {
             pars = self.par();
         }
         drop(pars);
-        let mut basics: Vec<(usize, char)> = self.basic();
+        let _basics: Vec<(usize, char)> = self.basic();
         self.expression = eval(&self.expression);
         self.expression.parse().unwrap()
     }
@@ -317,6 +316,6 @@ fn find_matching_parenthesis(expression: &str) -> Option<usize> {
     None
 }
 fn main() {
-    let mut l = Lexer::new("123.45*(678.90 / (-2.5+ 11.5)-(80 -19) *33.25) / 20 + 11");
+    let mut l = Lexer::new("12* 123/(-5 + 2)");
     println!("{}", l.parse() as f64);
 }
