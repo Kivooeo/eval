@@ -8,7 +8,7 @@ fn main() {
     assert_eq!(f!("2 ---- +++++ 2"), 4.0);
 
     // we can consider brackets in our expressions
-    assert_eq!(f!("(x + x) * x" => 2), 8.0);
+    assert_eq!(f!("(x + x) * x" => 2.0), 8.0);
 
     // and as we saw in the previous example we can fill variables with some values
     assert_eq!(f!("2 ---- +++++ x - x + y" => 2.0, 4.0), 6.0);
