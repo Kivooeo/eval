@@ -1,5 +1,4 @@
 pub mod math {
-
     #[macro_export]
     macro_rules! f {
         ($expr:expr) => {
@@ -22,7 +21,24 @@ pub mod math {
             }
         };
     }
+    fn replace_consts(x: &str) -> String {
+        let mut x = x.to_lowercase();
+        x = x.replace("pi", "3.1415926536");
+        x = x.replace("p", "3.1415926536");
+        x = x.replace("π", "3.1415926536");
+        x = x.replace("e", "2.7182818284");
+        x = x.replace("sq2", "1.41421");
+        x = x.replace("sq3", "1.7320508075");
+        x = x.replace("sq5", "2.23606");
+        x = x.replace("gamma", "0.57721");
+        x = x.replace("varphi", "1.61803");
+        x = x.replace("beta", "0.28016");
+        x = x.replace("lambda", "0.30366");
+        x = x.replace("sigma", "0.35323");
+        x = x.replace("psi", "3.35988");
 
+        x
+    }
     fn get(data: &Vec<(char, f64)>, a: char) -> Option<f64> {
         for i in data {
             if i.0 == a {
@@ -32,19 +48,20 @@ pub mod math {
         None
     }
     pub fn fill(x: &str, values: &[f64]) -> String {
-        let mut x = x.to_string();
-        x = x.replace("cos", "001");
-        x = x.replace("sin", "002");
-        x = x.replace("tan", "003");
-        x = x.replace("acos", "004");
-        x = x.replace("asin", "005");
-        x = x.replace("atan", "006");
-        x = x.replace("cosh", "007");
-        x = x.replace("sinh", "008");
-        x = x.replace("tanh", "009");
-        x = x.replace("acosh", "010");
-        x = x.replace("asinh", "011");
-        x = x.replace("abs", "012");
+        let mut x = replace_consts(x);
+        x = x.replace("cos", "|001");
+        x = x.replace("sin", "|002");
+        x = x.replace("tan", "|003");
+        x = x.replace("acos", "|004");
+        x = x.replace("asin", "|005");
+        x = x.replace("atan", "|006");
+        x = x.replace("cosh", "|007");
+        x = x.replace("sinh", "|008");
+        x = x.replace("tanh", "|009");
+        x = x.replace("acosh", "|010");
+        x = x.replace("asinh", "|011");
+        x = x.replace("abs", "|012");
+        x = x.replace("sqrt", "|013");
         let mut data: Vec<(char, f64)> = Vec::<(char, f64)>::new();
         let f: String = x.chars().filter(|x| x.is_alphabetic()).collect();
         let mut d: String = String::new();
@@ -54,9 +71,11 @@ pub mod math {
             }
         }
         drop(f);
+
         for i in 0..d.len() {
             data.push((d.chars().nth(i).unwrap(), values[i]));
         }
+
         let mut answer = x.to_string();
         let mut ln = 0usize;
         for i in x.chars() {
@@ -70,19 +89,19 @@ pub mod math {
                 ln += 1;
             }
         }
-        answer = answer.replace("001", "cos");
-        answer = answer.replace("002", "sin");
-        answer = answer.replace("003", "tan");
-        answer = answer.replace("004", "acos");
-        answer = answer.replace("005", "asin");
-        answer = answer.replace("006", "atan");
-        answer = answer.replace("007", "cosh");
-        answer = answer.replace("008", "sinh");
-        answer = answer.replace("009", "tanh");
-        answer = answer.replace("010", "acosh");
-        answer = answer.replace("011", "asinh");
-        answer = answer.replace("012", "abs");
-        println!("{}", answer);
+        answer = answer.replace("|001", "cos");
+        answer = answer.replace("|002", "sin");
+        answer = answer.replace("|003", "tan");
+        answer = answer.replace("|004", "acos");
+        answer = answer.replace("|005", "asin");
+        answer = answer.replace("|006", "atan");
+        answer = answer.replace("|007", "cosh");
+        answer = answer.replace("|008", "sinh");
+        answer = answer.replace("|009", "tanh");
+        answer = answer.replace("|010", "acosh");
+        answer = answer.replace("|011", "asinh");
+        answer = answer.replace("|012", "abs");
+        answer = answer.replace("|013", "sqrt");
         answer
     }
     pub fn eval(expr: &str) -> f64 {
@@ -355,6 +374,8 @@ pub mod math {
                 .chars()
                 .filter(|x| !x.is_ascii_whitespace())
                 .collect();
+            self.expression = replace_consts(&self.expression);
+
             let mut trigs = find_trig_functions_indices(&self.expression);
             while trigs.len() != 0 {
                 let i = trigs[0];
@@ -364,7 +385,8 @@ pub mod math {
 
                     let function = &x[0..idx];
                     let argument = &x[idx + 1..x.len() - 1];
-                    let argument: f64 = argument.parse().unwrap();
+
+                    let argument: f64 = eval(argument);
                     let res = match function {
                         "cos" => argument.cos().to_string(),
                         "sin" => argument.sin().to_string(),
@@ -379,6 +401,7 @@ pub mod math {
                         "asinh" => argument.asinh().to_string(),
                         "atanh" => argument.atanh().to_string(),
                         "abs" => argument.abs().to_string(),
+                        "sqrt" => argument.sqrt().to_string(),
                         _ => "Unsupported function".to_string(),
                     };
                     self.expression.replace_range(i.0..=i.1, &res);
