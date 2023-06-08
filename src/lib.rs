@@ -251,8 +251,7 @@ pub mod math {
                     basics = basic(&x);
 
                     let i = basics[0];
-                    println!("expr is {x}");
-                    println!("op is {i:?}");
+
                     if basics.len() == 1
                         || (basics.len() == 2
                             && basics[1].1 == '-'
