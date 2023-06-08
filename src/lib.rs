@@ -251,7 +251,8 @@ pub mod math {
                     basics = basic(&x);
 
                     let i = basics[0];
-
+                    println!("expr is {x}");
+                    println!("op is {i:?}");
                     if basics.len() == 1
                         || (basics.len() == 2
                             && basics[1].1 == '-'
@@ -277,7 +278,7 @@ pub mod math {
                         right_idx = i.0 + 1;
 
                         let first_char = x.chars().nth(right_idx).unwrap();
-                        if first_char == '-' {
+                        if first_char == '-' || first_char == '+' {
                             right_idx += 1;
                         }
                         while right_idx < x.len()
