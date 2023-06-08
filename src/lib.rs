@@ -5,8 +5,21 @@ pub mod math {
         ($expr:expr) => {
             eval::math::eval($expr)
         };
+        ($expr:expr;$round:expr) => {
+            {
+                let scale = 10_f64.powi($round as i32);
+                (eval::math::eval($expr) * scale).round() / scale
+            }
+        };
         ($expr:expr => $($args:expr),*) => {
             eval::math::eval( eval::math::fill($expr, &[$($args),*]).as_str())
+        };
+        ($expr:expr => $($args:expr),*; $round:expr) => {
+            {
+                let scale = 10_f64.powi($round as i32);
+                let result = eval::math::eval( eval::math::fill($expr, &[$($args),*]).as_str());
+                (result * scale).round() / scale
+            }
         };
     }
 
@@ -19,6 +32,19 @@ pub mod math {
         None
     }
     pub fn fill(x: &str, values: &[f64]) -> String {
+        let mut x = x.to_string();
+        x = x.replace("cos", "001");
+        x = x.replace("sin", "002");
+        x = x.replace("tan", "003");
+        x = x.replace("acos", "004");
+        x = x.replace("asin", "005");
+        x = x.replace("atan", "006");
+        x = x.replace("cosh", "007");
+        x = x.replace("sinh", "008");
+        x = x.replace("tanh", "009");
+        x = x.replace("acosh", "010");
+        x = x.replace("asinh", "011");
+        x = x.replace("abs", "012");
         let mut data: Vec<(char, f64)> = Vec::<(char, f64)>::new();
         let f: String = x.chars().filter(|x| x.is_alphabetic()).collect();
         let mut d: String = String::new();
@@ -44,6 +70,19 @@ pub mod math {
                 ln += 1;
             }
         }
+        answer = answer.replace("001", "cos");
+        answer = answer.replace("002", "sin");
+        answer = answer.replace("003", "tan");
+        answer = answer.replace("004", "acos");
+        answer = answer.replace("005", "asin");
+        answer = answer.replace("006", "atan");
+        answer = answer.replace("007", "cosh");
+        answer = answer.replace("008", "sinh");
+        answer = answer.replace("009", "tanh");
+        answer = answer.replace("010", "acosh");
+        answer = answer.replace("011", "asinh");
+        answer = answer.replace("012", "abs");
+        println!("{}", answer);
         answer
     }
     pub fn eval(expr: &str) -> f64 {
