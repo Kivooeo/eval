@@ -5,10 +5,10 @@ use eval::f;
 fn main() {
     loop {
         print!(">>> ");
-        stdout().flush();
+        stdout().flush().unwrap();
         let mut input = String::new();
-        stdin().read_line(&mut input);
-        input.replace("\n", "");
+        stdin().read_line(&mut input).unwrap();
+        input = input.replace("\n", "");
         if input.contains("|") {
             let split = input.split("|").into_iter().collect::<Vec<&str>>();
             let vars = split[1]
