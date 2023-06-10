@@ -1,74 +1,81 @@
-This crate is simple math evaluator, with trigonometrical functions and equations written on rust (that mean that blazingly fast)
+# eval-rs
 
----
+eval-rs is a simple command-line tool written in Rust that evaluates mathematical expressions. It allows you to substitute variables, provides built-in constants such as pi and e, and supports various mathematical functions like cosine, sine, etc. This project serves as an introductory project for learning the Rust programming language and using Git for version control.
 
-So, here more about usage and functional.
+## Features
+
+- Evaluate basic mathematical expressions
+- Substitute variables in expression
+- Support for built-in constants (pi, e, etc.)
+- Support for mathematical functions (cos, sin, etc.)
+- Can round your final answer
+
+## Installation
+
+To use test or using this program you need to have Rust and Cargo installed on your system. If you don`t have them, you can install them on [https://rustup.rs/](https://rustup.rs/)
+
+Once you have Rust and Cargo installed, you can clone this repository:
 
 ```rust
-use eval::f;
-
-fn main() {
-
-    // so we can evaluate simple math expressions
-    assert_eq!(f!("2 + 2"), 4.0);
-
-    //and we can evaluata strange math expressions
-    assert_eq!(f!("2 ---- +++++ 2"), 4.0);
-    
-    // we can consider brackets in our expressions
-    assert_eq!(f!("(x + x) * x" => 2), 8.0); 
-
-    // and as we saw in the previous example we can fill variables with some values
-    assert_eq!(f!("2 ---- +++++ x - x + y" => 2.0, 4.0), 6.0);
-    //                         ^    ^  ^
-    //                      x take 2.0|and y take 4.0    
-
-    // and we can evaluate trigonometrical functions like this 
-    assert_eq!(f!("cos(30)"), 0.15425144988758405);
-
-    // ! We can't use trigonometrical functions and fill variable in one expression
-}
+git clone https://github.com/Kivooeo/eval-rs/
 ```
 
-so, here we can see example of using
+then go inside cloned directory 
 
-> Todo: add support for trigonometrical functions and fill variables in one expressions. ✅
----
-> Todo: add this to crates.io
-
----
-## ver 1.1.
 ```rust
-use eval::f;
-
-fn main() {
-    println!("{}", f!("cos(p)"));
-    //output: -1
-    // some fixes and update functionality of macro
-    //
-    // now we can use trigonometrical functions and fill variable
-    // in one expression like, this
-    assert_eq!(f!("cos(x)" => 2.0), -0.4161468365471424);
-    //also now we can round our final result to N digits after point
-    //like this
-    assert_eq!(f!("cos(x)" => 2.0; 2), -0.42);
-    //and we can use round in simple expressions
-    assert_eq!(f!("3.143721736"; 2), 3.14);
-    //it also support some contast values like
-    /*
-    pi {p, π} = 3.1415926536
-    e = 2.7182818284
-    sq2 = 1.41421
-    sq3 = 1.7320508075
-    sq5 = 2.23606
-    gamma = 0.57721
-    varphi = 1.61803
-    beta = 0.28016
-    lambda = 0.30366
-    sigma = 0.35323
-    psi = 3.35988
-    */
-    //and it also can work like this
-    println!("{}", f!("sqrt(x) * sin(pi ^ e) / 1.500001" => 2.0; 2));
-}
+cd eval-rs
 ```
+
+and build my project using Cargo
+
+```rust
+cargo build --release
+```
+
+## Usage
+
+You can use eval-rs by running compiled binary and providing mathematical expression as a command-line argument. For example
+
+```rust
+./target/release/eval-rs
+// Basic mathematical expressions
+>>> 2 + 2
+answer is 4
+// Using constant and operating them
+>>> pi
+answer is 3.1415926536
+>>> pi + 2
+answer is 5.1415926536
+>>> pi ^ e - 1
+answer is 21.459157717041357
+// Filling expression with variables
+>>> x + y | 2 4
+answer is 6
+// Round answer
+>>> pi | | 1
+answer is 3.1415926536
+// Something more complex 
+// (btw this cant help you to solution complex expressions) 
+>>> cos(pi)
+answer is -1
+>>> sqrt(cos(pi))
+answer is NaN
+>>>
+```
+
+## Contributing
+
+If you`re interested to contributing to eval-rs, feel free to fork the repository, make your changes and submit a pull request. We welcome any contributions, whether they are bug fixes, new features, or improvements.
+
+Before submitting a pull request, please ensure that your code passes the existing tests and add any tests as necessary.
+
+---
+
+## License
+
+This project is under MIT License. See the LICENSE file for more details.
+
+## Acknowledgments
+
+- The Rust programming language: **[https://www.rust-lang.org/](https://www.rust-lang.org/)**
+- Git documentation: **[https://git-scm.com/doc](https://git-scm.com/doc)**
