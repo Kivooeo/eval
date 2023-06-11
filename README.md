@@ -55,7 +55,7 @@ answer is 6
 >>> pi | | 1
 answer is 3.1415926536
 // Something more complex 
-// (btw this cant help you to solution complex expressions) 
+// (btw this cant help you to solution complex expressions like this one sqrt(-1) ) 
 >>> cos(pi)
 answer is -1
 >>> sqrt(cos(pi))
