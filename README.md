@@ -53,7 +53,7 @@ answer is 21.459157717041357
 answer is 6
 // Round answer
 >>> pi | | 1
-answer is 3.1415926536
+answer is 3.1
 // Something more complex 
 // (btw this cant help you to solution complex expressions like this one sqrt(-1) ) 
 >>> cos(pi)
