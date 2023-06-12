@@ -114,10 +114,12 @@ pub mod math {
 
     fn basic(x: &str) -> Vec<(usize, char)> {
         let mut result: Vec<(usize, char)> = Vec::new();
-        for i in x.chars().enumerate() {
-            if matches!(i.1, '^') {
-                result.push(i);
+        let mut it = x.len();
+        for i in x.chars().rev() {
+            if matches!(i, '^') {
+                result.push((it - 1, i));
             }
+            it -= 1;
         }
         for i in x.chars().enumerate() {
             if matches!(i.1, '*' | '/' | '%') {
@@ -192,7 +194,7 @@ pub mod math {
         }
         x = x.replace("+-", "-");
         x = x.replace("-+", "-");
-        for i in x.chars() {
+        for i in x.chars().rev() {
             if matches!(i, '+' | '-' | '*' | '/' | '^' | '%') {
                 counter += 1;
             }
@@ -219,13 +221,16 @@ pub mod math {
                 let mut right: (usize, f64) = (operator.0, 0.0);
                 left.1 = x[left.0 .0..left.0 .1].trim().parse().unwrap();
                 right.1 = x[right.0 + 1..].trim().parse().unwrap();
-
+                println!("1");
                 let result1: f64 = match operator.1 {
                     '+' => left.1 + right.1,
                     '-' => left.1 - right.1,
                     '*' => left.1 * right.1,
                     '/' => left.1 / right.1,
-                    '^' => left.1.powf(right.1),
+                    '^' => {
+                        println!("{} ^ {}", left.1, right.1);
+                        left.1.powf(right.1)
+                    }
                     '%' => left.1 % right.1,
                     _ => panic!("Bad token"),
                 };
@@ -243,14 +248,12 @@ pub mod math {
                     let right: f64;
                     let mut left_idx = 0usize;
                     let mut right_idx = 0usize;
-
                     if basics.len() == 1 && basics[0].1 == '-' && basics[0].0 == 1 {
                         basics.remove(0);
                     }
                     basics = basic(&x);
 
                     let i = basics[0];
-
                     if basics.len() == 1
                         || (basics.len() == 2
                             && basics[1].1 == '-'
@@ -336,10 +339,12 @@ pub mod math {
         }
         fn basic(&self) -> Vec<(usize, char)> {
             let mut result: Vec<(usize, char)> = Vec::new();
-            for i in self.expression.chars().enumerate() {
-                if matches!(i.1, '^') {
-                    result.push(i);
+            let mut it = self.expression.len();
+            for i in self.expression.chars() {
+                if matches!(i, '^') {
+                    result.push((it - 1, i));
                 }
+                it -= 1;
             }
             for i in self.expression.chars().enumerate() {
                 if matches!(i.1, '*' | '/' | '%') {
