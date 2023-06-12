@@ -37,7 +37,7 @@ cargo build --release
 You can use eval-rs by running compiled binary and providing mathematical expression as a command-line argument. For example
 
 ```rust
-./target/release/eval-rs
+./target/release/eval
 // Basic mathematical expressions
 >>> 2 + 2
 answer is 4
@@ -53,9 +53,9 @@ answer is 21.459157717041357
 answer is 6
 // Round answer
 >>> pi | | 1
-answer is 3.1415926536
+answer is 3.1
 // Something more complex 
-// (btw this cant help you to solution complex expressions) 
+// (btw this cant help you to solution complex expressions like this one sqrt(-1) ) 
 >>> cos(pi)
 answer is -1
 >>> sqrt(cos(pi))
