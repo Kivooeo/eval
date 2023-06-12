@@ -221,16 +221,12 @@ pub mod math {
                 let mut right: (usize, f64) = (operator.0, 0.0);
                 left.1 = x[left.0 .0..left.0 .1].trim().parse().unwrap();
                 right.1 = x[right.0 + 1..].trim().parse().unwrap();
-                println!("1");
                 let result1: f64 = match operator.1 {
                     '+' => left.1 + right.1,
                     '-' => left.1 - right.1,
                     '*' => left.1 * right.1,
                     '/' => left.1 / right.1,
-                    '^' => {
-                        println!("{} ^ {}", left.1, right.1);
-                        left.1.powf(right.1)
-                    }
+                    '^' => left.1.powf(right.1),
                     '%' => left.1 % right.1,
                     _ => panic!("Bad token"),
                 };
