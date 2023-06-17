@@ -61,9 +61,9 @@ answer is -1
 >>> sqrt(cos(pi))
 answer is NaN
 >>>
+```
 
----
-## What’s new at 1.2 version
+## What's new at version 1.2
 
 - Simple support for range based expressions
 - Fixed pow sign priority
@@ -81,9 +81,6 @@ answer is 120.000
 >>> (2 * 2..4).add() // cuz sum of range 4..4 == 0
 answer is 0.0
 ```
-
----
-
 ## Contributing
 
 If you`re interested to contributing to eval-rs, feel free to fork the repository, make your changes and submit a pull request. We welcome any contributions, whether they are bug fixes, new features, or improvements.
