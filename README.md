@@ -80,6 +80,8 @@ answer is -9.00
 answer is 120.000
 >>> (2 * 2..4).add() // cuz sum of range 4..4 == 0
 answer is 0.0
+>>> (cos(pi)..5).add() // also can use constants and trig. functions inside if they return integer like `cos(pi) == -1`
+answer is 9.0
 ```
 ## Contributing
 
