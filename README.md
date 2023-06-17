@@ -82,6 +82,11 @@ answer is 120.000
 answer is 0.0
 >>> (cos(pi)..5).add() // also can use constants and trig. functions inside if they return integer like `cos(pi) == -1`
 answer is 9.0
+>>> (x..y).add() | 1 5
+answer is 10.00
+>>> (x..y).add() * 2 + 2 | 1 5
+answer is 22.00
+>>>
 ```
 ## Contributing
 
