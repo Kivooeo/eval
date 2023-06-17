@@ -1,5 +1,4 @@
 pub mod math {
-    use std::ops::RangeBounds;
 
     #[macro_export]
     macro_rules! f {
@@ -29,12 +28,12 @@ pub mod math {
         if !x.contains(&"..") {
             return x;
         }
-        let mut isInclusive: bool = false;
+        let mut is_inclusive: bool;
         let mut indexes: Vec<i32> = x.match_indices("..").map(|x| x.0 as i32).collect();
         while indexes.len() != 0 {
             let i = indexes[0] as usize;
-            let mut left_bracket = 0usize;
-            let mut right_bracket = 0usize;
+            let left_bracket: usize;
+            let right_bracket: usize;
             let left = loop {
                 let mut index: usize = i;
                 while index > 0 && x.chars().nth(index).unwrap() != '(' {
@@ -46,10 +45,10 @@ pub mod math {
             let right = loop {
                 let mut index: usize = i + 2;
                 if x.chars().nth(index).unwrap() == '=' {
-                    isInclusive = true;
+                    is_inclusive = true;
                     index += 1;
                 } else {
-                    isInclusive = false;
+                    is_inclusive = false;
                 }
                 while index < x.len() && x.chars().nth(index).unwrap() != ')' {
                     index += 1;
@@ -60,7 +59,7 @@ pub mod math {
 
             let mut left: i32 = x[left..i].parse().unwrap();
             let mut right: i32 = x[{
-                if isInclusive {
+                if is_inclusive {
                     i + 3
                 } else {
                     i + 2
@@ -68,7 +67,7 @@ pub mod math {
             }..right]
                 .parse()
                 .unwrap();
-            let isFunctional: bool = match x.chars().nth(right_bracket + 1) {
+            let is_functional: bool = match x.chars().nth(right_bracket + 1) {
                 Some(val) => {
                     if val == '.' {
                         true
@@ -79,7 +78,9 @@ pub mod math {
                 None => false,
             };
 
-            if isInclusive && isFunctional && &x[right_bracket + 1..=right_bracket + 6] == ".add()"
+            if is_inclusive
+                && is_functional
+                && &x[right_bracket + 1..=right_bracket + 6] == ".add()"
             {
                 if left > right {
                     let temp = left;
@@ -88,8 +89,8 @@ pub mod math {
                 }
                 let sum: i32 = (left..=right).sum();
                 x.replace_range(left_bracket..=right_bracket + 6, &sum.to_string())
-            } else if !isInclusive
-                && isFunctional
+            } else if !is_inclusive
+                && is_functional
                 && &x[right_bracket + 1..=right_bracket + 6] == ".add()"
             {
                 if left > right {
@@ -100,8 +101,8 @@ pub mod math {
 
                 let sum: i32 = (left..=right).sum();
                 x.replace_range(left_bracket..=right_bracket + 6, &sum.to_string())
-            } else if isInclusive
-                && isFunctional
+            } else if is_inclusive
+                && is_functional
                 && &x[right_bracket + 1..=right_bracket + 6] == ".mul()"
             {
                 if left > right {
@@ -111,8 +112,8 @@ pub mod math {
                 }
                 let prod: i32 = (left..=right).product();
                 x.replace_range(left_bracket..=right_bracket + 6, &prod.to_string())
-            } else if !isInclusive
-                && isFunctional
+            } else if !is_inclusive
+                && is_functional
                 && &x[right_bracket + 1..=right_bracket + 6] == ".mul()"
             {
                 if left > right {
@@ -122,8 +123,8 @@ pub mod math {
                 }
                 let prod: i32 = (left..right).product();
                 x.replace_range(left_bracket..=right_bracket + 6, &prod.to_string())
-            } else if !isInclusive
-                && isFunctional
+            } else if !is_inclusive
+                && is_functional
                 && &x[right_bracket + 1..=right_bracket + 6] == ".div()"
             {
                 if left > right {
@@ -140,8 +141,8 @@ pub mod math {
                     x
                 };
                 x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
-            } else if isInclusive
-                && isFunctional
+            } else if is_inclusive
+                && is_functional
                 && &x[right_bracket + 1..=right_bracket + 6] == ".div()"
             {
                 if left > right {
@@ -158,8 +159,8 @@ pub mod math {
                     x
                 };
                 x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
-            } else if !isInclusive
-                && isFunctional
+            } else if !is_inclusive
+                && is_functional
                 && &x[right_bracket + 1..=right_bracket + 6] == ".sub()"
             {
                 if left > right {
@@ -176,8 +177,8 @@ pub mod math {
                     x
                 };
                 x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
-            } else if isInclusive
-                && isFunctional
+            } else if is_inclusive
+                && is_functional
                 && &x[right_bracket + 1..=right_bracket + 6] == ".sub()"
             {
                 if left > right {
