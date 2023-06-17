@@ -127,42 +127,6 @@ pub mod math {
                 x.replace_range(left_bracket..=right_bracket + 6, &prod.to_string())
             } else if !is_inclusive
                 && is_functional
-                && &x[right_bracket + 1..=right_bracket + 6] == ".div()"
-            {
-                if left > right {
-                    let temp = left;
-                    right = left;
-                    left = temp;
-                }
-                let sub: Vec<i32> = (left..right).collect();
-                let sub: i32 = {
-                    let mut x = left;
-                    for i in sub {
-                        x /= i;
-                    }
-                    x
-                };
-                x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
-            } else if is_inclusive
-                && is_functional
-                && &x[right_bracket + 1..=right_bracket + 6] == ".div()"
-            {
-                if left > right {
-                    let temp = left;
-                    right = left;
-                    left = temp;
-                }
-                let sub: Vec<i32> = (left..=right).collect();
-                let sub: i32 = {
-                    let mut x = left;
-                    for i in sub {
-                        x /= i;
-                    }
-                    x
-                };
-                x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
-            } else if !is_inclusive
-                && is_functional
                 && &x[right_bracket + 1..=right_bracket + 6] == ".sub()"
             {
                 if left > right {
