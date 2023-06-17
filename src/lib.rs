@@ -58,7 +58,6 @@ pub mod math {
             };
 
             let mut left: i32 = evaluate(&x[left..i]).parse().unwrap();
-            println!("{}", left);
             let mut right: i32 = evaluate(
                 &x[{
                     if is_inclusive {
@@ -70,7 +69,6 @@ pub mod math {
             )
             .parse()
             .unwrap();
-            println!("{}", right);
             let is_functional: bool = match x.chars().nth(right_bracket + 1) {
                 Some(val) => {
                     if val == '.' {
