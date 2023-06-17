@@ -57,16 +57,20 @@ pub mod math {
                 break index;
             };
 
-            let mut left: i32 = x[left..i].parse().unwrap();
-            let mut right: i32 = x[{
-                if is_inclusive {
-                    i + 3
-                } else {
-                    i + 2
-                }
-            }..right]
-                .parse()
-                .unwrap();
+            let mut left: i32 = evaluate(&x[left..i]).parse().unwrap();
+            println!("{}", left);
+            let mut right: i32 = evaluate(
+                &x[{
+                    if is_inclusive {
+                        i + 3
+                    } else {
+                        i + 2
+                    }
+                }..right],
+            )
+            .parse()
+            .unwrap();
+            println!("{}", right);
             let is_functional: bool = match x.chars().nth(right_bracket + 1) {
                 Some(val) => {
                     if val == '.' {
@@ -99,7 +103,7 @@ pub mod math {
                     left = temp;
                 }
 
-                let sum: i32 = (left..=right).sum();
+                let sum: i32 = (left..right).sum();
                 x.replace_range(left_bracket..=right_bracket + 6, &sum.to_string())
             } else if is_inclusive
                 && is_functional
