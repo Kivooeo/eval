@@ -24,7 +24,7 @@ fn main() {
                 let round: i32 = split[2].trim().parse::<i32>().unwrap();
                 println!("{}", eval::f!(&string_answer; round));
             } else {
-                println!("{:.width$}", answer, width = string_answer.len());
+                println!("answer is {:.width$}", answer, width = string_answer.len());
             }
         } else {
             let answer = f!(&input);
