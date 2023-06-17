@@ -25,7 +25,7 @@ pub mod math {
     }
     pub fn replace_ranges(x: &str) -> String {
         let mut x: String = x.to_lowercase();
-        println!("x is in 26 is {x}");
+
         if !x.contains(&"..") {
             return x;
         }
@@ -57,17 +57,7 @@ pub mod math {
                 right_bracket = index;
                 break index;
             };
-            println!("left is {}", &x[left..i]);
-            println!(
-                "right is {}",
-                &x[{
-                    if isInclusive {
-                        i + 3
-                    } else {
-                        i + 2
-                    }
-                }..right]
-            );
+
             let mut left: i32 = x[left..i].parse().unwrap();
             let mut right: i32 = x[{
                 if isInclusive {
@@ -88,11 +78,7 @@ pub mod math {
                 }
                 None => false,
             };
-            println!(
-                "before {}",
-                &x[right_bracket + 1..=right_bracket + 6] == ".sub()"
-            );
-            println!("functionality {}", isFunctional);
+
             if isInclusive && isFunctional && &x[right_bracket + 1..=right_bracket + 6] == ".add()"
             {
                 if left > right {
@@ -111,7 +97,7 @@ pub mod math {
                     right = left;
                     left = temp;
                 }
-                println!("{}..{}", left, right);
+
                 let sum: i32 = (left..=right).sum();
                 x.replace_range(left_bracket..=right_bracket + 6, &sum.to_string())
             } else if isInclusive
@@ -587,7 +573,7 @@ pub mod math {
                     let idx = x.chars().position(|x| x == '(').unwrap();
 
                     let function = &x[0..idx];
-                    println!("{function}");
+
                     let argument = &x[idx + 1..x.len() - 1];
 
                     let argument: f64 = eval(argument);
@@ -628,7 +614,6 @@ pub mod math {
             drop(pars);
             let _basics: Vec<(usize, char)> = self.basic();
             self.expression = evaluate(&self.expression);
-            dbg!(&self.expression);
             self.expression.parse().unwrap()
         }
     }
@@ -666,11 +651,10 @@ pub mod math {
                 is_inside_trig_func = false;
             }
         }
-        println!("{:?}", right_bracks);
+
         let mut right_functions: Vec<(usize, usize)> = Vec::new();
         let mut brackets = 0usize;
         for i in indices {
-            println!("function is {}", &expression[i.0..right_bracks[brackets]]);
             if matches!(
                 &expression[i.0..right_bracks[brackets]],
                 "cos"
