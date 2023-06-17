@@ -61,7 +61,28 @@ answer is -1
 >>> sqrt(cos(pi))
 answer is NaN
 >>>
+
+---
+## What’s new at 1.2 version
+
+- Simple support for range based expressions
+- Fixed pow sign priority
+it worked like this `2 ^ 3 ^ 4 == (2 ^ 3) ^ 4`
+now it fixed and work like this `2 ^ 3 ^ 4 == 2 ^ (3 ^ 4)`
+
+```rust
+//little about range based
+>>> (1..5).add()
+answer is 10.00
+>>> (1..5).sub()
+answer is -9.00
+>>> (1..=5).mul()
+answer is 120.000
+>>> (2 * 2..4).add() // cuz sum of range 4..4 == 0
+answer is 0.0
 ```
+
+---
 
 ## Contributing
 
