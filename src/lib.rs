@@ -1,4 +1,6 @@
 pub mod math {
+    use std::ops::RangeBounds;
+
     #[macro_export]
     macro_rules! f {
         ($expr:expr) => {
@@ -20,6 +22,199 @@ pub mod math {
                 (result * scale).round() / scale
             }
         };
+    }
+    pub fn replace_ranges(x: &str) -> String {
+        let mut x: String = x.to_lowercase();
+        println!("x is in 26 is {x}");
+        if !x.contains(&"..") {
+            return x;
+        }
+        let mut isInclusive: bool = false;
+        let mut indexes: Vec<i32> = x.match_indices("..").map(|x| x.0 as i32).collect();
+        while indexes.len() != 0 {
+            let i = indexes[0] as usize;
+            let mut left_bracket = 0usize;
+            let mut right_bracket = 0usize;
+            let left = loop {
+                let mut index: usize = i;
+                while index > 0 && x.chars().nth(index).unwrap() != '(' {
+                    index -= 1;
+                }
+                left_bracket = index;
+                break index + 1;
+            };
+            let right = loop {
+                let mut index: usize = i + 2;
+                if x.chars().nth(index).unwrap() == '=' {
+                    isInclusive = true;
+                    index += 1;
+                } else {
+                    isInclusive = false;
+                }
+                while index < x.len() && x.chars().nth(index).unwrap() != ')' {
+                    index += 1;
+                }
+                right_bracket = index;
+                break index;
+            };
+            println!("left is {}", &x[left..i]);
+            println!(
+                "right is {}",
+                &x[{
+                    if isInclusive {
+                        i + 3
+                    } else {
+                        i + 2
+                    }
+                }..right]
+            );
+            let mut left: i32 = x[left..i].parse().unwrap();
+            let mut right: i32 = x[{
+                if isInclusive {
+                    i + 3
+                } else {
+                    i + 2
+                }
+            }..right]
+                .parse()
+                .unwrap();
+            let isFunctional: bool = match x.chars().nth(right_bracket + 1) {
+                Some(val) => {
+                    if val == '.' {
+                        true
+                    } else {
+                        false
+                    }
+                }
+                None => false,
+            };
+            println!(
+                "before {}",
+                &x[right_bracket + 1..=right_bracket + 6] == ".sub()"
+            );
+            println!("functionality {}", isFunctional);
+            if isInclusive && isFunctional && &x[right_bracket + 1..=right_bracket + 6] == ".add()"
+            {
+                if left > right {
+                    let temp = left;
+                    right = left;
+                    left = temp;
+                }
+                let sum: i32 = (left..=right).sum();
+                x.replace_range(left_bracket..=right_bracket + 6, &sum.to_string())
+            } else if !isInclusive
+                && isFunctional
+                && &x[right_bracket + 1..=right_bracket + 6] == ".add()"
+            {
+                if left > right {
+                    let temp = right;
+                    right = left;
+                    left = temp;
+                }
+                println!("{}..{}", left, right);
+                let sum: i32 = (left..=right).sum();
+                x.replace_range(left_bracket..=right_bracket + 6, &sum.to_string())
+            } else if isInclusive
+                && isFunctional
+                && &x[right_bracket + 1..=right_bracket + 6] == ".mul()"
+            {
+                if left > right {
+                    let temp = left;
+                    right = left;
+                    left = temp;
+                }
+                let prod: i32 = (left..=right).product();
+                x.replace_range(left_bracket..=right_bracket + 6, &prod.to_string())
+            } else if !isInclusive
+                && isFunctional
+                && &x[right_bracket + 1..=right_bracket + 6] == ".mul()"
+            {
+                if left > right {
+                    let temp = left;
+                    right = left;
+                    left = temp;
+                }
+                let prod: i32 = (left..right).product();
+                x.replace_range(left_bracket..=right_bracket + 6, &prod.to_string())
+            } else if !isInclusive
+                && isFunctional
+                && &x[right_bracket + 1..=right_bracket + 6] == ".div()"
+            {
+                if left > right {
+                    let temp = left;
+                    right = left;
+                    left = temp;
+                }
+                let sub: Vec<i32> = (left..right).collect();
+                let sub: i32 = {
+                    let mut x = left;
+                    for i in sub {
+                        x /= i;
+                    }
+                    x
+                };
+                x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
+            } else if isInclusive
+                && isFunctional
+                && &x[right_bracket + 1..=right_bracket + 6] == ".div()"
+            {
+                if left > right {
+                    let temp = left;
+                    right = left;
+                    left = temp;
+                }
+                let sub: Vec<i32> = (left..=right).collect();
+                let sub: i32 = {
+                    let mut x = left;
+                    for i in sub {
+                        x /= i;
+                    }
+                    x
+                };
+                x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
+            } else if !isInclusive
+                && isFunctional
+                && &x[right_bracket + 1..=right_bracket + 6] == ".sub()"
+            {
+                if left > right {
+                    let temp = left;
+                    right = left;
+                    left = temp;
+                }
+                let sub: Vec<i32> = (left..right).collect();
+                let sub: i32 = {
+                    let mut x = left;
+                    for i in sub {
+                        x -= i;
+                    }
+                    x
+                };
+                x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
+            } else if isInclusive
+                && isFunctional
+                && &x[right_bracket + 1..=right_bracket + 6] == ".sub()"
+            {
+                if left > right {
+                    let temp = left;
+                    right = left;
+                    left = temp;
+                }
+                let sub: Vec<i32> = (left..=right).collect();
+                let sub: i32 = {
+                    let mut x = left;
+                    for i in sub {
+                        x -= i;
+                    }
+                    x
+                };
+                x.replace_range(left_bracket..=right_bracket + 6, &sub.to_string())
+            } else {
+                panic!("Function type needed");
+            }
+            indexes = x.match_indices("..").map(|x| x.0 as i32).collect();
+        }
+
+        x
     }
     fn replace_consts(x: &str) -> String {
         let mut x = x.to_lowercase();
@@ -62,6 +257,10 @@ pub mod math {
         x = x.replace("asinh", "|011");
         x = x.replace("abs", "|012");
         x = x.replace("sqrt", "|013");
+        x = x.replace("add", "|014");
+        x = x.replace("mul", "|015");
+        x = x.replace("sub", "|016");
+        x = x.replace("div", "|017");
         let mut data: Vec<(char, f64)> = Vec::<(char, f64)>::new();
         let f: String = x.chars().filter(|x| x.is_alphabetic()).collect();
         let mut d: String = String::new();
@@ -102,6 +301,10 @@ pub mod math {
         answer = answer.replace("|011", "asinh");
         answer = answer.replace("|012", "abs");
         answer = answer.replace("|013", "sqrt");
+        answer = answer.replace("|014", "add");
+        answer = answer.replace("|015", "mul");
+        answer = answer.replace("|016", "sub");
+        answer = answer.replace("|017", "div");
         answer
     }
     pub fn eval(expr: &str) -> f64 {
@@ -384,6 +587,7 @@ pub mod math {
                     let idx = x.chars().position(|x| x == '(').unwrap();
 
                     let function = &x[0..idx];
+                    println!("{function}");
                     let argument = &x[idx + 1..x.len() - 1];
 
                     let argument: f64 = eval(argument);
@@ -402,14 +606,15 @@ pub mod math {
                         "atanh" => argument.atanh().to_string(),
                         "abs" => argument.abs().to_string(),
                         "sqrt" => argument.sqrt().to_string(),
-                        _ => "Unsupported function".to_string(),
+                        _ => function.to_string(),
                     };
                     self.expression.replace_range(i.0..=i.1, &res);
 
                     trigs = find_trig_functions_indices(&self.expression);
                 };
             }
-            let mut pars = self.par();
+            self.expression = replace_ranges(&self.expression);
+            let mut pars: Vec<(usize, usize)> = self.par();
             loop {
                 if pars.len() == 0 {
                     break;
@@ -423,6 +628,7 @@ pub mod math {
             drop(pars);
             let _basics: Vec<(usize, char)> = self.basic();
             self.expression = evaluate(&self.expression);
+            dbg!(&self.expression);
             self.expression.parse().unwrap()
         }
     }
@@ -431,6 +637,18 @@ pub mod math {
         let mut indices = Vec::new();
         let mut start_index = 0;
         let mut is_inside_trig_func = false;
+        let mut right_bracks: Vec<usize> = Vec::new();
+        for i in expression.chars().enumerate() {
+            if i.1 == '('
+                && i.0 != 0
+                && match expression.chars().nth(if i.0 == 0 { 0 } else { i.0 - 1 }) {
+                    Some(val) => !matches!(val, '+' | '-' | '*' | '/' | '^'),
+                    None => true,
+                }
+            {
+                right_bracks.push(i.0);
+            }
+        }
 
         for (index, c) in expression.chars().enumerate() {
             if c.is_alphabetic() {
@@ -448,8 +666,33 @@ pub mod math {
                 is_inside_trig_func = false;
             }
         }
-
-        indices
+        println!("{:?}", right_bracks);
+        let mut right_functions: Vec<(usize, usize)> = Vec::new();
+        let mut brackets = 0usize;
+        for i in indices {
+            println!("function is {}", &expression[i.0..right_bracks[brackets]]);
+            if matches!(
+                &expression[i.0..right_bracks[brackets]],
+                "cos"
+                    | "sin"
+                    | "tan"
+                    | "acos"
+                    | "asin"
+                    | "atan"
+                    | "cosh"
+                    | "sinh"
+                    | "tanh"
+                    | "acosh"
+                    | "asinh"
+                    | "atanh"
+                    | "abs"
+                    | "sqrt"
+            ) {
+                right_functions.push(i);
+            }
+            brackets += 1;
+        }
+        right_functions
     }
 
     fn find_matching_parenthesis(expression: &str) -> Option<usize> {
